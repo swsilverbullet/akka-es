@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.researchgate:gradle-release:2.2.1"
+        classpath "com.github.maiflai:gradle-scalatest:0.9"
+    }
+}
+
+apply plugin: 'com.github.maiflai.scalatest'
+
+apply plugin: 'java'
+apply plugin: 'scala'
+apply plugin: 'idea'
+apply from: file('versions.gradle')
+
+jar {
+    baseName = 'akka-es'
+    version =  '0.1-SNAPSHOT'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileScala {
+	scalaCompileOptions.additionalParameters = [
+		"-feature", "-unchecked", "-deprecation", "-language:postfixOps", "-Xfatal-warnings"
+	]
+}
+
+dependencies {
+	compile "com.typesafe:config:$typesafeConfigVersion"
+	compile "org.scoverage:scalac-scoverage-plugin_$scalaVersion:1.1.1"
+	compile "org.scoverage:scalac-scoverage-runtime_$scalaVersion:1.1.1"
+	compile "org.scala-lang:scala-library:$scalaVersion.$scalaMinorVersion"
+	compile "ch.qos.logback:logback-classic:$logbackVersion"
+	compile "com.typesafe.scala-logging:scala-logging-slf4j_$scalaVersion:$scalaLoggingVersion"
+	compile "com.typesafe.akka:akka-actor_$scalaVersion:$akkaActorVersion"
+	compile "com.typesafe.akka:akka-testkit_$scalaVersion:$akkaActorVersion"
+    compile "org.scalactic:scalactic_$scalaVersion:$scalacticVersion"
+    compile "commons-io:commons-io:2.4"
+	compile "joda-time:joda-time:$jodatimeVersion"
+
+    testCompile "org.scalatest:scalatest_$scalaVersion:$scalaTestVersion"
+	testCompile "org.mockito:mockito-all:$mockitoVersion"
+	testCompile "junit:junit:4.12"
+	testCompile "org.scalacheck:scalacheck_$scalaVersion:1.12.5"
+	testCompile "info.cukes:cucumber-scala_$scalaVersion:$cucumberVersion"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
